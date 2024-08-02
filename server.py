@@ -22,15 +22,16 @@ def sent_analyzer():
 
     if emotions is None:
         return "Invalid text! Please try again!"
-    elif emotions['dominant_emotion'] is None:
+
+    if emotions['dominant_emotion'] is None:
         return "Invalid text! Please try again!"
 
-    resp_str = f"For the given statement, the system response is " \
-            f"'anger': {emotions['anger']}, 'disgust': {emotions['disgust']}, 'fear': {emotions['fear']}, " \
-            f"'joy': {emotions['joy']} and 'sadness': {emotions['sadness']}. " \
-            f"The dominant emotion is {emotions['dominant_emotion']}."
+    res_str = f"For the given statement, the system response is 'anger': {emotions['anger']}, " \
+              f"'disgust': {emotions['disgust']}, 'fear': {emotions['fear']}, " \
+              f"'joy': {emotions['joy']} and 'sadness': {emotions['sadness']}. " \
+              f"The dominant emotion is {emotions['dominant_emotion']}."
 
-    return resp_str
+    return res_str
 
 @app.route("/")
 def render_index_page():
