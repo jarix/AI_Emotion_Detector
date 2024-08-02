@@ -1,5 +1,6 @@
 
 import requests   # library for HTTP requests
+import json       # JSON parsing
 
 def emotion_detector(text_to_analyse):
     """ Detect Emotion using the Emotion Predict Function of the Watson NLP Library
@@ -13,6 +14,20 @@ def emotion_detector(text_to_analyse):
     # Send POST request
     response = requests.post(url, json=myobj, headers=header)
 
-    # Return response text
-    return response.text 
-    
+    # Parse the JSON response
+    formatted_response = json.loads(response.text)
+
+    # Extract Emotion Scores
+    scores = {}
+    scores['anger'] =formatted_response['emotionPredictions'][0]['emotion']['anger']
+    scores['disgust'] = formatted_response['emotionPredictions'][0]['emotion']['disgust']
+    scores['fear'] = formatted_response['emotionPredictions'][0]['emotion']['fear']
+    scores['joy'] = formatted_response['emotionPredictions'][0]['emotion']['joy']
+    scores['sadness'] = formatted_response['emotionPredictions'][0]['emotion']['sadness']
+
+    # Determine dominant emotion
+    dominant = max(scores, key=scores.get)
+    scores['dominant_emotion'] = dominant
+
+    return(scores)
+
