@@ -19,15 +19,27 @@ def emotion_detector(text_to_analyse):
 
     # Extract Emotion Scores
     scores = {}
-    scores['anger'] =formatted_response['emotionPredictions'][0]['emotion']['anger']
-    scores['disgust'] = formatted_response['emotionPredictions'][0]['emotion']['disgust']
-    scores['fear'] = formatted_response['emotionPredictions'][0]['emotion']['fear']
-    scores['joy'] = formatted_response['emotionPredictions'][0]['emotion']['joy']
-    scores['sadness'] = formatted_response['emotionPredictions'][0]['emotion']['sadness']
+    if response.status_code == 200:
+        scores['anger'] = formatted_response['emotionPredictions'][0]['emotion']['anger']
+        scores['disgust'] = formatted_response['emotionPredictions'][0]['emotion']['disgust']
+        scores['fear'] = formatted_response['emotionPredictions'][0]['emotion']['fear']
+        scores['joy'] = formatted_response['emotionPredictions'][0]['emotion']['joy']
+        scores['sadness'] = formatted_response['emotionPredictions'][0]['emotion']['sadness']
 
-    # Determine dominant emotion
-    dominant = max(scores, key=scores.get)
-    scores['dominant_emotion'] = dominant
+        # Determine dominant emotion
+        dominant = max(scores, key=scores.get)
+        scores['dominant_emotion'] = dominant
+
+    elif response.status_code == 400:
+        scores['anger'] = None
+        scores['disgust'] = None
+        scores['fear'] = None
+        scores['joy'] = None
+        scores['sadness'] = None
+        scores['dominant_emotion'] = None
+
+    else:
+        scores = None
 
     return(scores)
 
